@@ -2,6 +2,7 @@ const mysql = require('mysql');
 const config = require('../config');
 const { error } = require('../red/respuestas');
 
+//parametros para coenctarse a la base
 const dbconfig = {
     host: config.mysql.host,
     user: config.mysql.user,
@@ -33,27 +34,58 @@ function conexionMysql(){
 }
 conexionMysql();
 
+
+//funciones para devolver datos de la base
 function todos(tabla){
     return new Promise( (resolve, reject) =>{
         conexion.query(`SELECT * FROM ${tabla}`, (error, result) =>{
-            if (error) return reject(error);
-            resolve (result);
-
+            return (error) ? reject(error) : resolve(result);
         })
     })
 }
 
 function uno(tabla, id){
+    return new Promise( (resolve, reject) =>{
+        conexion.query(`SELECT * FROM ${tabla} WHERE idTecnicos=${id}`, (error, result) =>{
+            return (error) ? reject(error) : resolve(result);
+        })
+    })
+}
 
+function insertar(tabla,data){
+    return new Promise( (resolve, reject) =>{
+        conexion.query(`INSERT INTO ${tabla} SET ?` ,data , (error, result) =>{
+            return (error) ? reject(error) : resolve(result);
+        })
+    })
+}
+
+function actualizar(tabla,data){
+    return new Promise( (resolve, reject) =>{
+        console.log(data)
+        conexion.query(`UPDATE ${tabla} SET ? WHERE idTecnicos = ?` [data, data.idTecnicos] , (error, result) =>{
+            return (error) ? reject(error) : resolve(result);
+        })
+    })
 }
 
 function agregar(tabla, data){
-
+    if(data && data.idTecnicos == 0){
+        return insertar(tabla, data);
+    }else{
+        return actualizar(tabla, data);
+    }
 }
 
-function eliminar(tabla,id){
-
+function eliminar(tabla,data){
+    console.log(data.id);
+    return new Promise( (resolve, reject) =>{
+        conexion.query(`DELETE FROM ${tabla} WHERE idTecnicos = ?` ,data.id, (error, result) =>{
+            return (error) ? reject(error) : resolve(result);
+        })
+    })
 }
+
 
 module.exports = {
     todos,
