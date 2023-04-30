@@ -60,14 +60,13 @@ function insertar(tabla,data){
     })
 }
 
-function actualizar(tabla,data){
-    return new Promise( (resolve, reject) =>{
-        console.log(data)
-        conexion.query(`UPDATE ${tabla} SET ? WHERE idTecnicos = ?` [data, data.idTecnicos] , (error, result) =>{
-            return (error) ? reject(error) : resolve(result);
-        })
+function actualizar(tabla, data) {
+    return new Promise((resolve, reject) => {
+      conexion.query(`UPDATE ${tabla} SET ? WHERE idTecnicos = ?`, [data, data.idTecnicos], (error, result) => {
+        return (error) ? reject(error) : resolve(result);
+      })
     })
-}
+  }
 
 function agregar(tabla, data){
     if(data && data.idTecnicos == 0){
