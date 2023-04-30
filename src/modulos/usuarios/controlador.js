@@ -1,6 +1,6 @@
 const db =require('../../DB/mysql');
 
-const tabla = 'tecnicos';
+const tabla = 'usuarios';
 
 
 
