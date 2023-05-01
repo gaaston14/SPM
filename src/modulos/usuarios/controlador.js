@@ -1,7 +1,7 @@
 const db =require('../../DB/mysql');
 
 const tabla = 'usuarios';
-
+const auth = require('../auth')
 
 
 module.exports = function (dbInyectada){
@@ -19,8 +19,28 @@ module.exports = function (dbInyectada){
         return db.uno(tabla,id);
     }
     
-    function agregar (body) {
-        return db.agregar(tabla,body);
+    async function agregar (body) {
+        const usuario = {
+            id: body.id,
+            nombre: body.nombre,
+            activo: body.activo
+        }
+        const respuesta = await db.agregar(tabla,usuario);
+        var insertId = 0;
+        if(body.id == 0){
+            insertId = respuesta.insertId
+        }else{
+            insertId = body.id
+        }
+        var respuesta2 = ''
+        if(body.usuario || body.password){
+            const respuesta2 = await auth.agregar({
+                id: insertId,
+                usuario: body.usuario,
+                password: body.password
+            })
+        }
+        return respuesta2;
     }
     
     function eliminar (body) {
