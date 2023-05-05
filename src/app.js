@@ -1,8 +1,10 @@
 const express = require('express');
 const config = require('./config');
 const morgan = require('morgan');
-const clientes = require('./modulos/clientes/rutas')
-const usuarios = require('./modulos/usuarios/rutas')
+const tecnicos = require('./modulos/tecnicos/rutas');
+const tareas = require('./modulos/tareas/rutas');
+const grupos = require('./modulos/grupos/rutas');
+const usuarios = require('./modulos/usuarios/rutas');
 const error = require('./red/errors');
 const auth = require('./modulos/auth/rutas');
 
@@ -17,7 +19,10 @@ app.use(express.urlencoded({extended:true}));
 app.set('port', config.app.port)
 
 //rutas
-app.use('/api/clientes',clientes);
+app.use('/api/tecnicos',tecnicos);
+app.use('/api/tareas',tareas);
+app.use('/api/tareas',tareas);
+app.use('/api/grupos',grupos);
 app.use('/api/usuarios',usuarios);
 app.use('/api/auth',auth);
 app.use(error);
