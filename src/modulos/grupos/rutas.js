@@ -7,9 +7,11 @@ const router = express.Router();
 
 //rutas
 router.get('/', todos);
+router.get('/grupostecnicos', todosInner2);
 router.get('/:id', uno);
 router.post('/',agregar);
 router.put('/',eliminar);
+
 
 
 
@@ -24,6 +26,15 @@ async function todos(req, res, next) {
     }
 };
 
+async function todosInner2(req, res, next) {
+    try{
+        const items = await controlador.todosInner2()
+        respuesta.succes(req,res, items, 200)
+    }catch(err){
+        next(err)
+    }
+};
+  
 async function uno(req, res, next) {
     try{
         const items = await controlador.uno(req.params.id)
@@ -46,6 +57,7 @@ async function agregar(req, res, next) {
         next(err)
     }
 };
+
 
 
 async function eliminar(req, res, next) {

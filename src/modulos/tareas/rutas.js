@@ -7,6 +7,7 @@ const router = express.Router();
 
 //rutas
 router.get('/', todos);
+router.get('/tareaprecio', todosInner);
 router.get('/:id', uno);
 router.post('/',agregar);
 router.put('/',eliminar);
@@ -18,6 +19,15 @@ router.put('/',eliminar);
 async function todos(req, res, next) {
     try{
         const items = await controlador.todos()
+        respuesta.succes(req,res, items, 200)
+    }catch(err){
+        next(err)
+    }
+};
+
+async function todosInner(req, res, next) {
+    try{
+        const items = await controlador.todosInner()
         respuesta.succes(req,res, items, 200)
     }catch(err){
         next(err)

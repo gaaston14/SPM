@@ -44,6 +44,25 @@ function todos(tabla){
     })
 }
 
+function todosInner(tabla, tabla2){
+    return new Promise( (resolve, reject) =>{
+        conexion.query(`SELECT * FROM ${tabla} INNER JOIN ${tabla2} ON ${tabla}.idTareas = ${tabla2}.idTarea`, (error, result) =>{
+            return (error) ? reject(error) : resolve(result);
+        })
+    })
+}
+
+function todosInner2(tabla, tabla2,tabla3){
+    return new Promise( (resolve, reject) =>{
+        conexion.query(`SELECT *
+        FROM ${tabla}
+        INNER JOIN ${tabla2} ON ${tabla}.idGupo = ${tabla2}.idGrupos
+        INNER JOIN ${tabla3} ON ${tabla}.id = ${tabla3}.id`, (error, result) =>{
+            return (error) ? reject(error) : resolve(result);
+        })
+    })
+}
+
 function uno(tabla, id){
     return new Promise( (resolve, reject) =>{
         conexion.query(`SELECT * FROM ${tabla} WHERE id=${id}`, (error, result) =>{
@@ -82,5 +101,7 @@ module.exports = {
     uno,
     agregar,
     eliminar,
-    query
+    query,
+    todosInner,
+    todosInner2,
 }

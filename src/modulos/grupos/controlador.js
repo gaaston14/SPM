@@ -1,6 +1,8 @@
 const db =require('../../DB/mysql');
 
-const tabla = 'grupos';
+const tabla = 'grupos_tecnicos';
+const tabla2 = 'grupos';
+const tabla3 = 'tecnicos';
 
 
 
@@ -27,10 +29,16 @@ module.exports = function (dbInyectada){
         return db.eliminar(tabla,body);
     }
 
+    function todosInner2 () {
+        console.log(tabla,tabla2,tabla3)
+        return db.todosInner2(tabla,tabla2,tabla3);
+    }
+
     return{
     todos,
     uno,
     agregar,
-    eliminar
+    eliminar,
+    todosInner2
     }
 }
