@@ -14,7 +14,7 @@ module.exports = function (dbInyectada){
     }
 
     function todos(){
-        return db.todos(tabla);
+        return db.todos(tabla2);
     }
     
     function uno(id){
