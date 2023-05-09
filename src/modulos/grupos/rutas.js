@@ -7,7 +7,9 @@ const router = express.Router();
 
 //rutas
 router.get('/', todos);
+router.get('/libres', libres);
 router.get('/grupostecnicos', todosInner2);
+router.get('/gruposleft', gruposleft);
 router.get('/:id', uno);
 router.post('/',agregar);
 router.put('/',eliminar);
@@ -20,6 +22,24 @@ router.put('/',eliminar);
 async function todos(req, res, next) {
     try{
         const items = await controlador.todos()
+        respuesta.succes(req,res, items, 200)
+    }catch(err){
+        next(err)
+    }
+};
+
+async function gruposleft(req, res, next) {
+    try{
+        const items = await controlador.gruposleft()
+        respuesta.succes(req,res, items, 200)
+    }catch(err){
+        next(err)
+    }
+};
+
+async function libres(req, res, next) {
+    try{
+        const items = await controlador.libres()
         respuesta.succes(req,res, items, 200)
     }catch(err){
         next(err)

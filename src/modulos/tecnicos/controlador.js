@@ -1,6 +1,7 @@
 const db =require('../../DB/mysql');
 
 const tabla = 'tecnicos';
+const tabla2 = 'grupos_tecnicos';
 
 
 
@@ -13,6 +14,11 @@ module.exports = function (dbInyectada){
 
     function todos(){
         return db.todos(tabla);
+    }
+
+    function libres(){
+        campo = 'idTecnico';
+        return db.libres(tabla,tabla2,campo);
     }
     
     function uno(id){
@@ -29,6 +35,7 @@ module.exports = function (dbInyectada){
 
     return{
     todos,
+    libres,
     uno,
     agregar,
     eliminar

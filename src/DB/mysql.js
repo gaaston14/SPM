@@ -44,6 +44,15 @@ function todos(tabla){
     })
 }
 
+function libres(tabla,tabla2,campo){
+    return new Promise( (resolve, reject) =>{
+        conexion.query(`select * from ${tabla} 
+        where ${tabla}.id not in (select ${tabla2}.${campo} from ${tabla2})`, (error, result) =>{
+            return (error) ? reject(error) : resolve(result);
+        })
+    })
+}
+
 function todosInner(tabla, tabla2){
     return new Promise( (resolve, reject) =>{
         conexion.query(`SELECT * FROM ${tabla} INNER JOIN ${tabla2} ON ${tabla}.id = ${tabla2}.id`, (error, result) =>{
@@ -59,6 +68,18 @@ function todosInner2(tabla, tabla2,tabla3){
         INNER JOIN ${tabla2} ON ${tabla}.idGupo = ${tabla2}.id
         INNER JOIN ${tabla3} ON ${tabla}.idTecnico = ${tabla3}.id`, (error, result) =>{
             return (error) ? reject(error) : resolve(result);
+        })
+    })
+}
+
+function gruposleft(tabla, tabla2,tabla3){
+    return new Promise( (resolve, reject) =>{
+        conexion.query(`SELECT g.id, g.descripcion, gt.idTecnico,t.nombre, gt.fechaAsig, gt.fechaFin 
+            FROM ${tabla2} AS g
+            LEFT JOIN ${tabla} AS gt ON g.id = gt.idGupo
+            LEFT JOIN ${tabla3} AS t ON t.id = gt.idTecnico`, (error, result) =>{
+            return (error) ? reject(error) : resolve(result);
+            
         })
     })
 }
@@ -98,10 +119,12 @@ function query(tabla,consulta){
 
 module.exports = {
     todos,
+    libres,
     uno,
     agregar,
     eliminar,
     query,
     todosInner,
     todosInner2,
+    gruposleft,
 }

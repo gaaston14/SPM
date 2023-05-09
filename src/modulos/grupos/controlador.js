@@ -16,6 +16,11 @@ module.exports = function (dbInyectada){
     function todos(){
         return db.todos(tabla2);
     }
+
+    function libres(){
+        campo = 'idGupo';
+        return db.libres(tabla2,tabla,campo);
+    }
     
     function uno(id){
         return db.uno(tabla,id);
@@ -30,15 +35,20 @@ module.exports = function (dbInyectada){
     }
 
     function todosInner2 () {
-        console.log(tabla,tabla2,tabla3)
         return db.todosInner2(tabla,tabla2,tabla3);
+    }
+
+    function gruposleft () {
+        return db.gruposleft(tabla,tabla2,tabla3);
     }
 
     return{
     todos,
+    libres,
     uno,
     agregar,
     eliminar,
-    todosInner2
+    todosInner2,
+    gruposleft,
     }
 }
