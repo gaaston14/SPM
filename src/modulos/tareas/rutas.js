@@ -11,8 +11,7 @@ router.get('/tareaprecio', todosInner);
 router.get('/:id', uno);
 router.post('/',agregar);
 router.post('/RegistrarTarea',RegistrarTarea);
-router.post('/agregarTarea',agregar);
-router.post('/agregarPrecioTarea',agregarPrecioTarea);
+router.post('/agregarTarea',agregarTarea); //
 router.put('/',eliminar);
 
 
@@ -48,15 +47,12 @@ async function uno(req, res, next) {
 
 async function agregar(req, res, next) {
     try{
-        const result = await controlador.agregar(req.body);
-        const id = result.id;
         if(req.body.id == 0){
             mensaje = 'item guardado con exito';
         }else{
             mensaje = 'item actualizado con exito';
         }
-        console.log(id);
-        respuesta.succes(req,res, mensaje, id, 201);
+        respuesta.succes(req,res, mensaje, 201);
     }catch(err){
         next(err)
     }
@@ -73,26 +69,27 @@ async function RegistrarTarea(req, res, next) {
 
 async function agregarTarea(req, res, next) {
     try{
-        const items = await controlador.agregar(req.body);
+        const tarea={
+            id: req.body.id,
+            nombre: req.body.nombre,
+        };
+        const result = await controlador.agregar(tarea);
+        const hoy = new Date();
+        const anio = hoy.getFullYear();
+        const mes = ('0' + (hoy.getMonth() + 1)).slice(-2);
+        const dia = ('0' + hoy.getDate()).slice(-2);
+        const fecha = `${anio}-${mes}-${dia}`;
+        const precio ={
+                id:result.insertId,
+                fechaDesde:fecha,
+                precio:req.body.precio
+        }
         if(req.body.id == 0){
             mensaje = 'item guardado con exito';
         }else{
             mensaje = 'item actualizado con exito';
         }
-        respuesta.succes(req,res, mensaje, 201);
-    }catch(err){
-        next(err)
-    }
-};
-
-async function agregarPrecioTarea(req, res, next) {
-    try{
-        const items = await controlador.agregar(req.body);
-        if(req.body.id == 0){
-            mensaje = 'item guardado con exito';
-        }else{
-            mensaje = 'item actualizado con exito';
-        }
+        await controlador.agregarPrecioTarea(precio);
         respuesta.succes(req,res, mensaje, 201);
     }catch(err){
         next(err)
