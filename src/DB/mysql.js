@@ -100,6 +100,14 @@ function agregar(tabla,data){
     })
 }
 
+function RegistrarTarea(tabla,data){
+    return new Promise( (resolve, reject) =>{
+        conexion.query(`INSERT INTO ${tabla} SET ? `, [data] , (error, result) =>{
+            return (error) ? reject(error) : resolve(result);
+        })
+    })
+}
+
 
 function eliminar(tabla,data){
     return new Promise( (resolve, reject) =>{
@@ -127,4 +135,5 @@ module.exports = {
     todosInner,
     todosInner2,
     gruposleft,
+    RegistrarTarea
 }
