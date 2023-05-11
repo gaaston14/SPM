@@ -139,13 +139,16 @@ function RegistrarTarea(tabla,data){
         })
     })
 }
-function ListarCertificaciones(tabla){
-    return new Promise( (resolve, reject) =>{
-        conexion.query(`SELECT * FROM ${tabla}`, (error, result) =>{
-            return (error) ? reject(error) : resolve(result);
-        })
-    })
-}
+function ListarCertificaciones(tabla, data) {
+    return new Promise((resolve, reject) => {
+      const query = `SELECT * FROM ${tabla} WHERE fechaCumplimiento BETWEEN ? AND ?`;
+      const values = [data.f1.toString(), data.f2.toString()];
+  
+      conexion.query(query, values, (error, result) => {
+        return error ? reject(error) : resolve(result);
+      });
+    });
+  }
 
 function eliminar(tabla,data){
     return new Promise( (resolve, reject) =>{

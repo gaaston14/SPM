@@ -31,7 +31,7 @@ async function todos(req, res, next) {
 
 async function ListarCertificaciones(req, res, next) {
     try{
-        const items = await controlador.ListarCertificaciones()
+        const items = await controlador.ListarCertificaciones(req.body)
         respuesta.succes(req,res, items, 200)
     }catch(err){
         next(err)
