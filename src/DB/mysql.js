@@ -55,7 +55,16 @@ function libres(tabla,tabla2,campo){
 
 function todosInner(tabla, tabla2){
     return new Promise( (resolve, reject) =>{
-        conexion.query(`SELECT * FROM ${tabla} INNER JOIN ${tabla2} ON ${tabla}.id = ${tabla2}.id`, (error, result) =>{
+        conexion.query(`SELECT t.nombre, t1.id,t1.fechaDesde, t2.precio 
+                FROM ${tabla2} t1
+                INNER JOIN (
+                SELECT id, MAX(fechaDesde) as maxFecha
+                FROM ${tabla2}
+                GROUP BY id
+                ) t3 ON t1.id = t3.id AND t1.fechaDesde = t3.maxFecha
+                INNER JOIN ${tabla2} t2 ON t1.id = t2.id AND t1.fechaDesde = t2.fechaDesde
+                INNER JOIN ${tabla} t
+            ON t2.id=t.id`, (error, result) =>{
             return (error) ? reject(error) : resolve(result);
         })
     })
@@ -72,18 +81,40 @@ function todosInner2(tabla, tabla2,tabla3){
     })
 }
 
-function gruposleft(tabla, tabla2,tabla3){
-    return new Promise( (resolve, reject) =>{
-        conexion.query(`SELECT g.id, g.descripcion, gt.idTecnico,t.nombre, gt.fechaAsig, gt.fechaFin 
-            FROM ${tabla2} AS g
-            LEFT JOIN ${tabla} AS gt ON g.id = gt.idGupo
-            LEFT JOIN ${tabla3} AS t ON t.id = gt.idTecnico
-            `, (error, result) =>{
-            return (error) ? reject(error) : resolve(result);
-            
-        })
-    })
-}
+function gruposleft(tabla, tabla2, tabla3) {
+    return new Promise((resolve, reject) => {
+      conexion.query(
+        `drop temporary table if exists maxfecha;`,
+        (error) => {
+          if (error) {
+            return reject(error);
+          }
+          conexion.query(
+            `
+            create temporary table maxfecha
+            select ${tabla}.idGupo, ${tabla}.idTecnico, max(${tabla}.fechaAsig) as fecha from ${tabla}
+            where ${tabla}.fechaFin is null
+            group by ${tabla}.idGupo, ${tabla}.idTecnico`,
+            (error) => {
+              if (error) {
+                return reject(error);
+              }
+                conexion.query(
+                    ` SELECT g.id, g.descripcion, gt.idTecnico, t.nombre, gt.fechaAsig, gt.fechaFin 
+                    FROM ${tabla2} AS g
+                    LEFT JOIN ${tabla} AS gt ON g.id = gt.idGupo
+                    LEFT JOIN ${tabla3} AS t ON t.id = gt.idTecnico
+                    LEFT JOIN maxfecha mf ON mf.idGupo=gt.idGupo and mf.idTecnico=t.id
+                    WHERE gt.fechaFin is null`,
+                    (error, result) => {
+                    return error ? reject(error) : resolve(result);
+                    }
+          );
+        }
+      );
+    });
+  }
+)}
 
 function uno(tabla, id){
     return new Promise( (resolve, reject) =>{
