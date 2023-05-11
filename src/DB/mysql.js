@@ -77,7 +77,8 @@ function gruposleft(tabla, tabla2,tabla3){
         conexion.query(`SELECT g.id, g.descripcion, gt.idTecnico,t.nombre, gt.fechaAsig, gt.fechaFin 
             FROM ${tabla2} AS g
             LEFT JOIN ${tabla} AS gt ON g.id = gt.idGupo
-            LEFT JOIN ${tabla3} AS t ON t.id = gt.idTecnico`, (error, result) =>{
+            LEFT JOIN ${tabla3} AS t ON t.id = gt.idTecnico
+            `, (error, result) =>{
             return (error) ? reject(error) : resolve(result);
             
         })
