@@ -50,7 +50,12 @@ module.exports = function (dbInyectada){
           throw error;
         }
       }
-    
+  
+
+    function ListarCertificaciones(){
+      return db.ListarCertificaciones(tabla3);
+    }
+      
     function agregarTareas (body) {
       return db.agregar(tabla,body);
     }
@@ -75,6 +80,7 @@ module.exports = function (dbInyectada){
     todosInner,
     RegistrarTarea,
     agregarTareas,
-    agregarPrecioTarea
+    agregarPrecioTarea,
+    ListarCertificaciones
     }
 }

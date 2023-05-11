@@ -17,6 +17,10 @@ module.exports = function (dbInyectada){
         return db.todos(tabla2);
     }
 
+    function asignados(){
+        return db.asignados(tabla,tabla2);
+    }
+
     function libres(){
         campo = 'idGupo';
         return db.libres(tabla2,tabla,campo);
@@ -50,5 +54,6 @@ module.exports = function (dbInyectada){
     eliminar,
     todosInner2,
     gruposleft,
+    asignados,
     }
 }

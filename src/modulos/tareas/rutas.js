@@ -8,10 +8,12 @@ const router = express.Router();
 //rutas
 router.get('/', todos);
 router.get('/tareaprecio', todosInner);
+router.get('/ListarTareas', ListarTareas);
+router.get('/ListarCertificaciones', ListarCertificaciones);
 router.get('/:id', uno);
 router.post('/',agregar);
 router.post('/RegistrarTarea',RegistrarTarea);
-router.post('/agregarTarea',agregarTarea); //
+router.post('/agregarTarea',agregarTarea);
 router.put('/',eliminar);
 
 
@@ -27,9 +29,27 @@ async function todos(req, res, next) {
     }
 };
 
+async function ListarCertificaciones(req, res, next) {
+    try{
+        const items = await controlador.ListarCertificaciones()
+        respuesta.succes(req,res, items, 200)
+    }catch(err){
+        next(err)
+    }
+};
+
 async function todosInner(req, res, next) {
     try{
         const items = await controlador.todosInner()
+        respuesta.succes(req,res, items, 200)
+    }catch(err){
+        next(err)
+    }
+};
+
+async function ListarTareas(req, res, next) {
+    try{
+        const items = await controlador.ListarTareas()
         respuesta.succes(req,res, items, 200)
     }catch(err){
         next(err)

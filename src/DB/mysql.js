@@ -139,7 +139,13 @@ function RegistrarTarea(tabla,data){
         })
     })
 }
-
+function ListarCertificaciones(tabla){
+    return new Promise( (resolve, reject) =>{
+        conexion.query(`SELECT * FROM ${tabla}`, (error, result) =>{
+            return (error) ? reject(error) : resolve(result);
+        })
+    })
+}
 
 function eliminar(tabla,data){
     return new Promise( (resolve, reject) =>{
@@ -157,6 +163,19 @@ function query(tabla,consulta){
     })
 }
 
+function asignados(tabla,tabla2){
+    return new Promise( (resolve, reject) =>{
+        conexion.query(`SELECT g.id, g.descripcion FROM ${tabla2} g
+                        INNER JOIN ${tabla} gt
+                            ON g.id=gt.idGupo
+                        WHERE fechaFin IS NULL
+                        GROUP BY g.id, g.descripcion`
+        , (error, result) =>{
+            return (error) ? reject(error) : resolve(result);
+        })
+    })
+}
+
 module.exports = {
     todos,
     libres,
@@ -167,5 +186,7 @@ module.exports = {
     todosInner,
     todosInner2,
     gruposleft,
-    RegistrarTarea
+    RegistrarTarea,
+    ListarCertificaciones,
+    asignados
 }
