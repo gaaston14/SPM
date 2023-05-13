@@ -9,7 +9,7 @@ const router = express.Router();
 router.get('/', todos);
 router.get('/tareaprecio', todosInner);
 router.get('/ListarTareas', ListarTareas);
-router.get('/ListarCertificaciones', ListarCertificaciones);
+router.post('/ListarCertificaciones', ListarCertificaciones);
 router.get('/:id', uno);
 router.post('/',agregar);
 router.post('/RegistrarTarea',RegistrarTarea);
@@ -32,6 +32,7 @@ async function todos(req, res, next) {
 async function ListarCertificaciones(req, res, next) {
     try{
         const items = await controlador.ListarCertificaciones(req.body)
+        console.log(items);
         respuesta.succes(req,res, items, 200)
     }catch(err){
         next(err)

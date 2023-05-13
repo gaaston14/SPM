@@ -3,6 +3,9 @@ const db =require('../../DB/mysql');
 const tabla = 'tareas';
 const tabla2 = 'preciotareas';
 const tabla3 = 'grupos_tareas';
+const tabla4 = 'grupos';
+const tabla5 = 'tecnicos';
+const tabla6 = 'grupos_tecnicos';
 
 
 module.exports = function (dbInyectada){
@@ -52,8 +55,8 @@ module.exports = function (dbInyectada){
       }
   
 
-    function ListarCertificaciones(data){
-      return db.ListarCertificaciones(tabla3,data);
+    function ListarCertificaciones(data) {
+      return db.ListarCertificaciones(tabla,tabla3,tabla4,tabla5,tabla6,data);
     }
       
     function agregarTareas (body) {

@@ -8,6 +8,7 @@ const router = express.Router();
 //rutas
 router.get('/', todos);
 router.get('/libres', libres);
+router.get('/asignados', asignados);
 router.get('/:id', uno);
 router.post('/',agregar);
 router.put('/',eliminar);
@@ -19,6 +20,15 @@ router.put('/',eliminar);
 async function todos(req, res, next) {
     try{
         const items = await controlador.todos()
+        respuesta.succes(req,res, items, 200)
+    }catch(err){
+        next(err)
+    }
+};
+
+async function asignados(req, res, next) {
+    try{
+        const items = await controlador.asignados()
         respuesta.succes(req,res, items, 200)
     }catch(err){
         next(err)

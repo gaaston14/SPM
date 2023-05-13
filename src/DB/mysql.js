@@ -139,10 +139,23 @@ function RegistrarTarea(tabla,data){
         })
     })
 }
-function ListarCertificaciones(tabla, data) {
+function ListarCertificaciones(tabla,tabla3,tabla4,tabla5,tabla6, data) {
     return new Promise((resolve, reject) => {
-      const query = `SELECT * FROM ${tabla} WHERE fechaCumplimiento BETWEEN ? AND ?`;
-      const values = [data.f1.toString(), data.f2.toString()];
+      console.log(tabla,tabla3,tabla4,tabla5,tabla6, data);
+      const query = `select t.nombre,gtar.conexion,gtar.fechaCumplimiento,gtar.hora,(tar.nombre) as tarea,gtar.cantidad,gtar.observacion from ${tabla3} as gtar
+                    inner join ${tabla} as tar
+                        on gtar.idtarea=tar.id
+                    inner join ${tabla6} as gt
+                        on gtar.idgrupo=gt.idgupo
+                    inner join ${tabla5} as t
+                        on gt.idTecnico=t.id
+                    inner join ${tabla4} as g
+                        on gt.idgupo=g.id
+                    
+                    where gtar.fechaCumplimiento between gt.fechaAsig and COALESCE(gt.fechaFin, '9999-12-31')
+                    and gtar.fechaCumplimiento between ? and ?
+                    and t.id=?`;
+      const values = [data.f1, data.f2, data.id];
   
       conexion.query(query, values, (error, result) => {
         return error ? reject(error) : resolve(result);
@@ -179,6 +192,19 @@ function asignados(tabla,tabla2){
     })
 }
 
+function tecnicosasignados(tabla,tabla2){
+    return new Promise( (resolve, reject) =>{
+        conexion.query(`SELECT t.id, t.nombre FROM ${tabla} t
+                        INNER JOIN ${tabla2} gt
+                            ON t.id=gt.idTecnico
+                        WHERE gt.fechaFin IS NULL
+                        GROUP BY t.id, t.nombre`
+        , (error, result) =>{
+            return (error) ? reject(error) : resolve(result);
+        })
+    })
+}
+
 module.exports = {
     todos,
     libres,
@@ -191,5 +217,6 @@ module.exports = {
     gruposleft,
     RegistrarTarea,
     ListarCertificaciones,
-    asignados
+    asignados,
+    tecnicosasignados
 }

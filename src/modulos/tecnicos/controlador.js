@@ -16,6 +16,10 @@ module.exports = function (dbInyectada){
         return db.todos(tabla);
     }
 
+    function asignados(){
+        return db.tecnicosasignados(tabla,tabla2);
+    }
+
     function libres(){
         campo = 'idTecnico';
         return db.libres(tabla,tabla2,campo);
@@ -38,6 +42,7 @@ module.exports = function (dbInyectada){
     libres,
     uno,
     agregar,
-    eliminar
+    eliminar,
+    asignados
     }
 }
