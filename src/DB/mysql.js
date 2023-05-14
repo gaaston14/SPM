@@ -139,7 +139,7 @@ function RegistrarTarea(tabla,data){
         })
     })
 }
-function ListarCertificaciones(tabla,tabla3,tabla4,tabla5,tabla6, data) {
+/*function ListarCertificaciones(tabla,tabla3,tabla4,tabla5,tabla6, data) {
     return new Promise((resolve, reject) => {
       console.log(tabla,tabla3,tabla4,tabla5,tabla6, data);
       const query = `select t.nombre,gtar.conexion,gtar.fechaCumplimiento,gtar.hora,(tar.nombre) as tarea,gtar.cantidad,gtar.observacion from ${tabla3} as gtar
@@ -156,6 +156,30 @@ function ListarCertificaciones(tabla,tabla3,tabla4,tabla5,tabla6, data) {
                     and gtar.fechaCumplimiento between ? and ?
                     and t.id=?`;
       const values = [data.f1, data.f2, data.id];
+  
+      conexion.query(query, values, (error, result) => {
+        return error ? reject(error) : resolve(result);
+      });
+    });
+  }*/
+
+  function ListarCertificaciones(tabla,tabla2, tabla3,tabla4,tabla5,tabla6, data) {
+    return new Promise((resolve, reject) => {
+      console.log(tabla,tabla2, tabla3,tabla4,tabla5,tabla6, data);
+      const query = `SELECT t.nombre, gtar.conexion, gtar.fechaCumplimiento, gtar.hora, tar.nombre AS tarea, gtar.cantidad, MAX(pt.precio) AS precio, gtar.observacion
+      FROM ${tabla3} AS gtar
+      INNER JOIN ${tabla} AS tar ON gtar.idtarea = tar.id
+      INNER JOIN ${tabla6} AS gt ON gtar.idgrupo = gt.idgupo
+      INNER JOIN ${tabla5} AS t ON gt.idTecnico = t.id
+      INNER JOIN ${tabla4} AS g ON gt.idgupo = g.id
+      INNER JOIN ${tabla2} AS pt ON gtar.idtarea = pt.id AND gtar.fechaCumplimiento >= pt.fechaDesde
+      WHERE gtar.fechaCumplimiento BETWEEN gt.fechaAsig AND COALESCE(gt.fechaFin, '9999-12-31')
+          AND gtar.fechaCumplimiento BETWEEN ? AND ?
+          AND t.id = ?
+          AND gtar.hora BETWEEN ? AND ?
+      GROUP BY t.nombre, gtar.conexion, gtar.fechaCumplimiento, gtar.hora, tar.nombre, gtar.cantidad, gtar.observacion
+      `;
+      const values = [data.f1, data.f2, data.id, data.h1, data.h2];
   
       conexion.query(query, values, (error, result) => {
         return error ? reject(error) : resolve(result);

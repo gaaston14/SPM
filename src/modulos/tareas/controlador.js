@@ -56,7 +56,7 @@ module.exports = function (dbInyectada){
   
 
     function ListarCertificaciones(data) {
-      return db.ListarCertificaciones(tabla,tabla3,tabla4,tabla5,tabla6,data);
+      return db.ListarCertificaciones(tabla,tabla2, tabla3,tabla4,tabla5,tabla6,data);
     }
       
     function agregarTareas (body) {
