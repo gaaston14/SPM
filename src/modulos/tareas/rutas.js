@@ -9,6 +9,7 @@ const router = express.Router();
 router.get('/', todos);
 router.get('/tareaprecio', todosInner);
 router.get('/ListarTareas', ListarTareas);
+router.get('/sumatareas', sumatareas);
 router.post('/ListarCertificaciones', ListarCertificaciones);
 router.get('/:id', uno);
 router.post('/',agregar);
@@ -24,6 +25,15 @@ router.put('/',eliminar);
 async function todos(req, res, next) {
     try{
         const items = await controlador.todos()
+        respuesta.succes(req,res, items, 200)
+    }catch(err){
+        next(err)
+    }
+};
+
+async function sumatareas(req, res, next) {
+    try{
+        const items = await controlador.sumatareas()
         respuesta.succes(req,res, items, 200)
     }catch(err){
         next(err)

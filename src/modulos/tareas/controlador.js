@@ -18,6 +18,10 @@ module.exports = function (dbInyectada){
     function todos(){
         return db.todos(tabla);
     }
+
+    function sumatareas(){
+      return db.sumatareas(tabla,tabla3);
+  }
     
     function uno(id){
         return db.uno(tabla,id);
@@ -84,6 +88,7 @@ module.exports = function (dbInyectada){
     RegistrarTarea,
     agregarTareas,
     agregarPrecioTarea,
-    ListarCertificaciones
+    ListarCertificaciones,
+    sumatareas
     }
 }

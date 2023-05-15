@@ -44,6 +44,18 @@ function todos(tabla){
     })
 }
 
+function sumatareas(tabla,tabla3){
+    return new Promise( (resolve, reject) =>{
+        conexion.query(`SELECT t.nombre, COUNT(*) AS cantidad
+        FROM ${tabla3} gt
+        INNER JOIN ${tabla} t ON gt.idtarea = t.id
+        WHERE gt.fechaCumplimiento >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)
+        GROUP BY t.id, t.nombre;`, (error, result) =>{
+            return (error) ? reject(error) : resolve(result);
+        })
+    })
+}
+
 function libres(tabla,tabla2,campo){
     return new Promise( (resolve, reject) =>{
         conexion.query(`select * from ${tabla} 
@@ -262,5 +274,6 @@ module.exports = {
     asignados,
     tecnicosasignados,
     actualizartecnico,
-    actualizargrupo
+    actualizargrupo,
+    sumatareas
 }
