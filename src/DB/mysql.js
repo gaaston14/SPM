@@ -59,7 +59,7 @@ function sumatareas(tabla,tabla3){
 function libres(tabla,tabla2,campo){
     return new Promise( (resolve, reject) =>{
         conexion.query(`select * from ${tabla} 
-        where ${tabla}.id not in (select ${tabla2}.${campo} from ${tabla2})`, (error, result) =>{
+        where ${tabla}.id not in (select ${tabla2}.${campo} from ${tabla2} where fechaFin is null)`, (error, result) =>{
             return (error) ? reject(error) : resolve(result);
         })
     })
