@@ -33,6 +33,9 @@ module.exports = function (dbInyectada){
     function agregar (body) {
         return db.agregar(tabla2,body);
     }
+    function agregarGrupo (body) {
+        return db.agregar(tabla,body);
+    }
     
     function eliminar (body) {
         return db.eliminar(tabla,body);
@@ -46,6 +49,10 @@ module.exports = function (dbInyectada){
         return db.gruposleft(tabla,tabla2,tabla3);
     }
 
+    function actualizargrupo (body) {
+        return db.actualizargrupo(tabla,body);
+    }
+
     return{
     todos,
     libres,
@@ -55,5 +62,7 @@ module.exports = function (dbInyectada){
     todosInner2,
     gruposleft,
     asignados,
+    actualizargrupo,
+    agregarGrupo
     }
 }

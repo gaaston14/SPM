@@ -14,6 +14,7 @@ router.get('/:id', uno);
 router.post('/',agregar);
 router.post('/RegistrarTarea',RegistrarTarea);
 router.post('/agregarTarea',agregarTarea);
+router.post('/agregarPrecio',agregarPrecio);
 router.put('/',eliminar);
 
 
@@ -112,6 +113,25 @@ async function agregarTarea(req, res, next) {
         }
         await controlador.agregarPrecioTarea(precio);
         respuesta.succes(req,res, mensaje, 201);
+    }catch(err){
+        next(err)
+    }
+};
+
+async function agregarPrecio(req, res, next) {
+    const hoy = new Date();
+    const anio = hoy.getFullYear();
+    const mes = ('0' + (hoy.getMonth() + 1)).slice(-2);
+    const dia = ('0' + hoy.getDate()).slice(-2);
+    const fecha = `${anio}-${mes}-${dia}`;
+    const precio ={
+            id:req.body.id,
+            fechaDesde:fecha,
+            precio:req.body.precio
+    }
+    try{
+        const items = await controlador.agregarPrecioTarea(precio);
+        respuesta.succes(req,res, 'Tarea guardada exitosamente', 201);
     }catch(err){
         next(err)
     }

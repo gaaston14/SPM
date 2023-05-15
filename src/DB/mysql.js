@@ -125,6 +125,7 @@ function uno(tabla, id){
 }
 
 function agregar(tabla,data){
+    console.log(data);
     return new Promise( (resolve, reject) =>{
         conexion.query(`INSERT INTO ${tabla} SET ? ON DUPLICATE KEY UPDATE ?`, [data,data] , (error, result) =>{
             return (error) ? reject(error) : resolve(result);
@@ -195,6 +196,23 @@ function eliminar(tabla,data){
     })
 }
 
+function actualizartecnico(tabla,data){
+    return new Promise( (resolve, reject) =>{
+        conexion.query(`UPDATE ${tabla} SET ${tabla}.nombre = ?, ${tabla}.fNac = ? WHERE id = ?` ,[data.nombre,data.fNac,data.id], (error, result) =>{
+            return (error) ? reject(error) : resolve(result);
+        })
+    })
+}
+
+function actualizargrupo(tabla,data){
+    return new Promise( (resolve, reject) =>{
+        console.log(data);
+        conexion.query(`UPDATE ${tabla} SET ${tabla}.fechaFin = ? WHERE idGupo = ? and idTecnico = ?`, [data.fechaFin, data.idGupo, data.idTecnico], (error, result) => {
+            return (error) ? reject(error) : resolve(result);
+        })
+    })
+}
+
 function query(tabla,consulta){
     return new Promise( (resolve, reject) =>{
         conexion.query(`SELECT * FROM ${tabla} WHERE ?`, consulta, (error, result) =>{
@@ -242,5 +260,7 @@ module.exports = {
     RegistrarTarea,
     ListarCertificaciones,
     asignados,
-    tecnicosasignados
+    tecnicosasignados,
+    actualizartecnico,
+    actualizargrupo
 }

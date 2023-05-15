@@ -12,6 +12,7 @@ router.get('/asignados', asignados);
 router.get('/:id', uno);
 router.post('/',agregar);
 router.put('/',eliminar);
+router.put('/actualizartecnico', actualizartecnico);
 
 
 
@@ -20,6 +21,15 @@ router.put('/',eliminar);
 async function todos(req, res, next) {
     try{
         const items = await controlador.todos()
+        respuesta.succes(req,res, items, 200)
+    }catch(err){
+        next(err)
+    }
+};
+
+async function actualizartecnico(req, res, next) {
+    try{
+        const items = await controlador.actualizartecnico(req.body)
         respuesta.succes(req,res, items, 200)
     }catch(err){
         next(err)

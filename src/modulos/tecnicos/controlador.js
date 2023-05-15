@@ -36,6 +36,9 @@ module.exports = function (dbInyectada){
     function eliminar (body) {
         return db.eliminar(tabla,body);
     }
+    function actualizartecnico (body) {
+        return db.actualizartecnico(tabla,body);
+    }
 
     return{
     todos,
@@ -43,6 +46,7 @@ module.exports = function (dbInyectada){
     uno,
     agregar,
     eliminar,
-    asignados
+    asignados,
+    actualizartecnico
     }
 }
